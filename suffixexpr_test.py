@@ -35,12 +35,10 @@ class MyTestCase(unittest.TestCase):
 
         s = "1- 3-10-3 +2"
         ans = 1 - 3 - 10 - 3 + 2
-        print(suffixcal.parse(s))
-        print(suffixcal.calculate(s))
-        print(ans)
+
         self.assertEqual(ans == suffixcal.calculate(s), True)
 
-        s = "4/1*2"
+        s = "4/ 1 * 2"
         ans = 4/1*2
         self.assertEqual(ans == suffixcal.calculate(s), True)
 
@@ -48,6 +46,8 @@ class MyTestCase(unittest.TestCase):
         ans = 4 / (1 * 2)
         self.assertEqual(ans == suffixcal.calculate(s), True)
 
-
+        s= "1 - 2 - 3 - 10 - 100"
+        ans =1 - 2 - 3 - 10 - 100
+        self.assertEqual(ans == suffixcal.calculate(s), True)
 if __name__ == '__main__':
     unittest.main()

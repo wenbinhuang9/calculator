@@ -39,15 +39,19 @@ class SuffixExpression:
 
     def parse(self, expr):
         # (3+5)*6 - (2 + 3)
-        reg = "^([0-9]+|\+|\-|\*|/|\(|\))"
+        reg = "([0-9]+|\+|\-|\*|/|\(|\)|\s)"
         pattern = re.compile(reg)
-
+        begin, end = 0, len(expr)
         suffix = []
         operators = []
         try:
-            while expr != "":
-                match_ans = pattern.match(expr)
+            while begin < end:
+                match_ans = pattern.match(expr, begin, end)
                 match_str = match_ans.group(1)
+
+                begin += len(match_str)
+                if match_str.strip() == "":
+                    continue
 
                 if match_str in self.precedence:
                     self.__put_to_operator(suffix, operators, match_str)
@@ -56,8 +60,6 @@ class SuffixExpression:
                     number = int(match_str)
                     suffix.append(number)
 
-                expr = expr[len(match_str):]
-                expr = expr.strip()
 
             while len(operators) > 0:
                 suffix.append(operators.pop())
@@ -102,5 +104,6 @@ class SuffixExpression:
 
             return ans
         except Exception as e:
-            print(e)
-            raise  ValueError("invalid suffix {0}", suffix)
+             print("invalid suffix {0}", suffix)
+             raise e
+
