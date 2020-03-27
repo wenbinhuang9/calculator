@@ -1,6 +1,6 @@
 import unittest
 import re
-from suffixexpression import SuffixExpression
+from app.suffixexpression import SuffixExpression
 class MyTestCase(unittest.TestCase):
     def test_suffix_expr(self):
         s ="1213+5)*6-(2 + 3)"
