@@ -18,14 +18,23 @@ function printOutput(output) {
     document.getElementById("output-value").innerText=output;
 }
 
-function httpGet(theUrl, expr)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "POST", theUrl, false ); // false for synchronous request
+
+function httpPost(theUrl, expr, success ){
+   var xmlHttp = new XMLHttpRequest();
+
+    xmlHttp.open( "POST", theUrl, true ); // false for synchronous request
     xmlHttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     var data = 'expr=' + expr;
+
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4) {
+            if (xmlHttp.status == 200) {
+                printHistory("");
+                printOutput(xmlHttp.responseText);
+            }
+        }
+    }
     xmlHttp.send(data);
-    return xmlHttp.responseText;
 }
 
 var operator = document.getElementsByClassName("operator");
@@ -39,9 +48,7 @@ for(var i =0;i<operator.length;i++){
 
             var url = "http://127.0.0.1:5000/calculate";
             var encodeData = window.btoa(history);
-            var responseText = httpGet(url, encodeData);
-            printHistory("");
-            printOutput(responseText);
+            httpPost(url, encodeData);
         }
         else if(op == "clear") {
            printOutput("");
